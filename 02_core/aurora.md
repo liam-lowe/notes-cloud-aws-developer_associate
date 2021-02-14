@@ -1,6 +1,5 @@
 # Aurora
 
-
 ## Summary
 
 Aurora is a managed database service provided by AWS, similar to RDS. Aurora is a closed-source proproetary database optimized for cloud distribution and workloads. Aurora Serverless in a an automated capacity-planned instance of Aurora.

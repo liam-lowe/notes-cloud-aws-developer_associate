@@ -80,7 +80,6 @@ It allows for the creation of the following SQL databases:
   - Restore the DB from encrypted snapshot
   - Migrate applications to the new DB, and delete the old database
 
-
 ### Feature - RDS Security
 
 #### RDS Security - Summary
