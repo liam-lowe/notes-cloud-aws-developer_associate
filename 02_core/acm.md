@@ -20,6 +20,11 @@ ACM can be deployed on AWS resources including:
 - Amazon CloudFront distributions
 - APIs on API Gateway
 
+To host public SSL certificates in AWS, you can:
+
+- Buy your own and upload them using the CLI
+- Have ACM provision and renew public SSL certificates for you (free of cost)
+
 ## Security
 
 ## Use Case
