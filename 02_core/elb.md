@@ -78,7 +78,114 @@ The health check is done on a port and route (`\health` is common).
 
 If the response is not an HTTP 200 OK, then the instance is deemed unhealthy
 
+### Summary - Monitoring
+
+ELB access logs will log all access requests (so you can debug per request).
+
+CloudWatch metrics will give you aggregate statistics (eg. connections count)
+
+### Summary - Stickiness
+
+It is possible to implement stickiness so that the same client is always redirected to the same instance behind a load balancer.
+
+This works for Classic Load Balancers and Application Load Balancers.
+
+The cookies used to control stickiness has an expiration date that you control.
+
+Use Case: make sure that the user doesn't lose session data
+
+Enabling stickiness may bring imbalance to the load over the backend EC2 instances.
+
+### Summary - Cross Zone Load Balancing
+
+With cross-zone load balancing: each load balancer instance distributes evenly across all registered instances in all AZs.
+
+Otherwise each load balancer node distributes requests evenly across all the registered instances in its Availability Zone only.
+
+#### Summary - Cross Zone Load Balancing - Classic Load Balancer
+
+Disabled by default.
+
+No charges for inter AZ if enabled.
+
+#### Summary - Cross Zone Load Balancing - Application Load Balancer
+
+Always on (can't be disabled).
+
+No charges for inter AZ data
+
+#### Summary - Cross Zone Load Balancing - Network Load Balancer
+
+Disabled by default.
+
+You pay for inter AZ data if enabled.
+
+#### Summary - Connection Draining
+
+Connection Draining is the time to complete "in flight reqesuts" while the instance is de-registering, or unhealthy.
+
+Stops sending new requests to the instance while it is deregistering.
+
+Between 1 and 3600 seconds. Default is 300 seconds. Set a low value if your requests are short.
+
 ## Security
+
+You can use internal (private) or external (public) ELBS.
+
+### Security - SSL / TLS
+
+An SSL certificate allows traffic between your clients and your load balancer to be encrypted in transit (in-flight encryption).
+
+SSL refers to Secure Sockets Layer used to encrypt connections.
+
+TLS refers to Transport Layer Security.
+
+Nowadays, TLS certificates are ysed, but people still refer to it as SSL.
+
+Public SSL certificates are issues by Certificate Authorities (CA). Symantex, GoDaddy, Digicert, etc.
+
+SSL certs have an expiration date that you set and must be renewed.
+
+#### Security - SSL / TLS - Load Balancer
+
+The load balancer uses an X.509 certificate (SSL / TLS Server Certificate)
+
+You can manage certificates using ACM (AWS Certificate Manager)
+
+Alternatively, you can create and upload your own certificates manually.
+
+HTTPS Listener:
+    - You must specify a default certificate
+    - You can add an optional list of certs to support multiple domains
+    - Clients can use SNI (Server Name Identification) to specify the hostnames they reach
+    - Ability to specify a security policy to support older versions of SSL / TLS.
+
+##### Security - SSL / TLS - Load Balancer - Certificates
+
+###### Classic Load Balancer
+
+- Supports only one SSL Certificate
+- Must use multiple CLB for multiple hostnames with multiple SSL certificates.
+
+###### Application Load Balancer
+
+- Supports multiple listeners with multiple SSL Certificates
+- Uses SNI to make it work
+
+###### Network Load Balancer
+
+- Supports multiple listeners with multiple SSL Certificates
+- Uses SNI to make it work
+
+#### Security - SSL / TLS - Server Name Identification (SNI)
+
+SNI solves the probles of loading multiple SSL certificates onto one web server (to serve multiple websites)
+
+It's a relatively newer protocol and requires the client to indicate the hostname of the target server in the initial SSL handshake.
+
+The server will then return the correct certificate, or return a default one
+
+Only works for ALB and NLB (and CloudFront), not CLB.
 
 ## Use Case
 
