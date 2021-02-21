@@ -64,6 +64,12 @@ We can auto scale based on a custom published metric.
 2. Create a Cloudwatch Alarm to react to low / high values
 3. Use the Cloudwatch Alarm as the scaling policy for the ASG
 
+### Summary - Scaling Cooldowns
+
+The cooldown period helps to ensure that your Auto Scaling Group doesn't launch or terminate additional instances before the previous scaling activity takes place. In addition to a default cooldown for ASG, we can create cooldowns that apply to a specific Simple Scaling Policy. A scaling specifc cooldown over writes the default cooldown period.
+
+One common use for specific scaling based cooldowns is with a scale-in policy - a policy that terminates instances based on a specific criteria or metric. Because this policy terminates instances, AWS EC2 ASG needs less time to determine if it needs to terminate more instances.
+
 ## Security
 
 ## Use Case
